@@ -1,13 +1,18 @@
 const express = require("express");
-const {
-  getProducts,
-  getProductsByPrice,
-  createProduct
-} = require("../controllers/products.controller");
 const router = express.Router();
+const {
+  getAllProducts,
+  addProduct,
+  getProductsUnderPrice
+} = require("../controllers/products.controller");
 
-router.get("/products", getProducts);
-router.get("/products/price/:maxPrice", getProductsByPrice);
-router.post("/products", createProduct);
+// 1. Obtener todos los registros de una tabla
+router.get("/products", getAllProducts);
+
+// 2. Filtrar por una condición simple
+router.get("/products/price/:maxPrice", getProductsUnderPrice);
+
+// Para añadir productos
+router.post("/products", addProduct);
 
 module.exports = router;

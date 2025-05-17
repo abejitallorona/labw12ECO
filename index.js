@@ -1,11 +1,11 @@
 const express = require("express");
 const path = require("path");
 const { createServer } = require("http");
+const cors = require("cors");
 
-const usersRouter = require("./server/routes/users.router");
-const screen1EventsRouter = require("./server/routes/screen1Events.router");
+// Import routers
 const productsRouter = require("./server/routes/products.router");
-const usersExtendedRouter = require("./server/routes/users.router");
+const usersRouter = require("./server/routes/users.router");
 const ordersRouter = require("./server/routes/orders.router");
 const { initSocketInstance } = require("./server/services/socket.service");
 
@@ -15,20 +15,18 @@ const app = express();
 const httpServer = createServer(app);
 
 // Middlewares
+app.use(cors());
 app.use(express.json());
 app.use("/app1", express.static(path.join(__dirname, "app1")));
 app.use("/app2", express.static(path.join(__dirname, "app2")));
 
-// Routes
-app.use("/", usersRouter);
-app.use("/", screen1EventsRouter);
+// Routes for Lab 1
 app.use("/", productsRouter);
-app.use("/", usersExtendedRouter);
+app.use("/", usersRouter);
 app.use("/", ordersRouter);
 
 // Services
 initSocketInstance(httpServer);
 
 httpServer.listen(PORT, () =>
-  console.log(`Server running at http://localhost:${PORT}`)
-);
+  console.log(`Server running at http://localhost:${PORT}`));

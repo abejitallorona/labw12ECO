@@ -1,31 +1,58 @@
-const {
-  getAllOrders,
-  getOrdersOrderedByDate,
-  createOrderInDB
-} = require("../db/orders.db");
+const supabaseCli = require("../services/supabase.service");
 
-const getOrders = async (req, res) => {
-  const orders = await getAllOrders();
-  res.send(orders);
+// Controlador para obtener todas las órdenes
+const getAllOrders = async (req, res) => {
+  try {
+    const { data, error } = await supabaseCli.from("orders").select("*");
+    
+    if (error) throw error;
+    
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error getting orders:", error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
-const getOrdersByDate = async (req, res) => {
-  const orders = await getOrdersOrderedByDate();
-  res.send(orders);
+// Controlador para obtener órdenes ordenadas por fecha descendente
+const getOrdersByDateDesc = async (req, res) => {
+  try {
+    const { data, error } = await supabaseCli
+      .from("orders")
+      .select("*")
+      .order("created_at", { ascending: false });
+    
+    if (error) throw error;
+    
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error getting orders by date:", error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
-const createOrder = async (req, res) => {
-  const { user_id, total } = req.body;
-  const response = await createOrderInDB({ 
-    user_id, 
-    total, 
-    created_at: new Date().toISOString() 
-  });
-  res.send(response);
+// Controlador para añadir una orden
+const addOrder = async (req, res) => {
+  try {
+    const { user_id, total } = req.body;
+    const created_at = new Date().toISOString();
+    
+    const { data, error } = await supabaseCli
+      .from("orders")
+      .insert([{ user_id, total, created_at }])
+      .select();
+    
+    if (error) throw error;
+    
+    res.status(201).json(data[0]);
+  } catch (error) {
+    console.error("Error adding order:", error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
 module.exports = {
-  getOrders,
-  getOrdersByDate,
-  createOrder
+  getAllOrders,
+  getOrdersByDateDesc,
+  addOrder
 };
