@@ -1,66 +1,32 @@
-let users = [
-  {
-    id: 1,
-    name: "John Doe",
-  },
-];
+const {
+  getAllUsers,
+  getUsersSelectFields,
+  createUserInDB
+} = require("../db/users.db");
 
-const supabaseCli = require("../services/supabase.service");
-
-const getAllUsers = async () => {
-  const { data, error } = await supabaseCli.from("users").select();
-  if (error) {
-    console.error(error);
-    return error;
-  }
-  return data;
+const getUsers = async (req, res) => {
+  const users = await getAllUsers();
+  res.send(users);
 };
 
-const createUserInDB = async (user) => {
-  const { data, error } = await supabaseCli
-    .from("users")
-    .insert([user])
-    .select();
-
-  if (error) {
-    console.error(error);
-    return error;
-  }
-
-  return data;
+const getUserFields = async (req, res) => {
+  const fields = "username, email";
+  const users = await getUsersSelectFields(fields);
+  res.send(users);
 };
 
-const updateUserInDb = async (newData, userId) => {
-  const { data, error } = await supabaseCli
-    .from("users")
-    .update(newData)
-    .eq("id", userId)
-    .select();
-
-  if (error) {
-    console.error(error);
-  }
-
-  return data;
-};
-
-const deleteUserInDb = async (userId) => {
-  const { data, error } = await supabaseCli
-    .from("users")
-    .delete()
-    .eq("id", userId)
-    .select();
-
-  if (error) {
-    console.error(error);
-  }
-
-  return data;
+const createNewUser = async (req, res) => {
+  const { username, email } = req.body;
+  const response = await createUserInDB({ 
+    username, 
+    email, 
+    created_at: new Date().toISOString() 
+  });
+  res.send(response);
 };
 
 module.exports = {
-  getAllUsers,
-  createUserInDB,
-  updateUserInDb,
-  deleteUserInDb,
+  getUsers,
+  getUserFields,
+  createNewUser
 };

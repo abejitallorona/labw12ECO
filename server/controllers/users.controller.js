@@ -1,8 +1,7 @@
 const {
   getAllUsers,
-  createUserInDB,
-  updateUserInDb,
-  deleteUserInDb,
+  getUsersSelectFields,
+  createUserInDB
 } = require("../db/users.db");
 
 const getUsers = async (req, res) => {
@@ -10,28 +9,24 @@ const getUsers = async (req, res) => {
   res.send(users);
 };
 
-const createUser = async (req, res) => {
-  const { name } = req.body;
-  const response = await createUserInDB({ name });
-  res.send(response);
+const getUserFields = async (req, res) => {
+  const fields = "username, email";
+  const users = await getUsersSelectFields(fields);
+  res.send(users);
 };
 
-const updateUser = async (req, res) => {
-  const { name } = req.body;
-  const { id: userId } = req.params;
-  const response = await updateUserInDb({ name }, userId);
-  res.send(response);
-};
-
-const deleteUser = async (req, res) => {
-  const { id: userId } = req.params;
-  const response = await deleteUserInDb(userId);
+const createNewUser = async (req, res) => {
+  const { username, email } = req.body;
+  const response = await createUserInDB({ 
+    username, 
+    email, 
+    created_at: new Date().toISOString() 
+  });
   res.send(response);
 };
 
 module.exports = {
   getUsers,
-  createUser,
-  updateUser,
-  deleteUser,
+  getUserFields,
+  createNewUser
 };
