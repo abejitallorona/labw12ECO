@@ -7,6 +7,7 @@ const cors = require("cors");
 const productsRouter = require("./server/routes/products.router");
 const usersRouter = require("./server/routes/users.router");
 const ordersRouter = require("./server/routes/orders.router");
+const postsRouter = require("./server/routes/posts.router"); // Añadido para la Tarea 7
 const screen1EventsRouter = require("./server/routes/screen1Events.router");
 const { initSocketInstance } = require("./server/services/socket.service");
 
@@ -25,6 +26,7 @@ app.use("/app2", express.static(path.join(__dirname, "app2")));
 app.use("/", productsRouter);
 app.use("/", usersRouter);
 app.use("/", ordersRouter);
+app.use("/", postsRouter); // Añadido para la Tarea 7
 app.use("/", screen1EventsRouter);
 
 // Services

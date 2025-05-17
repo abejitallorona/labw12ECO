@@ -32,6 +32,29 @@ GET http://localhost:5050/orders/by-date
 
 ###
 
+
+# Trae todos los productos que cuesten más de 30 y que pertenezcan a la categoría "Electronics"
+GET http://localhost:5050/products/electronics-above-30
+
+# Trae todos los posts cuyo título contenga la palabra "tutorial"
+GET http://localhost:5050/posts/search/tutorial
+
+###
+
+# Trae los primeros 10 productos
+GET http://localhost:5050/products/paginated?page=1&pageSize=10
+
+# Página 2 (productos del 11 al 20)
+###
+GET http://localhost:5050/products/paginated?page=2&pageSize=10
+
+
+# Trae todos los productos asociados al usuario con ID 1
+GET http://localhost:5050/products/user/1
+
+###
+
+
 # Enviar evento para cambiar pantalla
 POST http://localhost:5050/change-screen
 Content-Type: application/json
