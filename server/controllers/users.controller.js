@@ -5,8 +5,12 @@ const getAllUsers = async (req, res) => {
   try {
     const { data, error } = await supabaseCli.from("users").select("*");
     
-    if (error) throw error;
+    if (error) {
+      console.error("Error getting users:", error);
+      return res.status(500).json({ error: error.message });
+    }
     
+    console.log("Users data:", data); // Add this for debugging
     res.status(200).json(data);
   } catch (error) {
     console.error("Error getting users:", error);
@@ -21,8 +25,12 @@ const getUsernameAndEmail = async (req, res) => {
       .from("users")
       .select("username, email");
     
-    if (error) throw error;
+    if (error) {
+      console.error("Error getting user fields:", error);
+      return res.status(500).json({ error: error.message });
+    }
     
+    console.log("User fields data:", data); // Add this for debugging
     res.status(200).json(data);
   } catch (error) {
     console.error("Error getting user fields:", error);

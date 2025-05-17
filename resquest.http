@@ -6,22 +6,11 @@ POST http://localhost:5050/users
 Content-Type: application/json
 
 {
-    "name": "John Doe"
+    "username": "new_user",
+    "email": "new_user@example.com"
 }
 
 ### 
-
-PATCH http://localhost:5050/users/0bf147d2-5058-4267-b7f7-eb40f8bfdb92
-Content-Type: application/json
-
-{
-    "name": "Jane Doe"
-}
-
-###
-
-DELETE http://localhost:5050/users/0bf147d2-5058-4267-b7f7-eb40f8bfdb92
-
 
 # Obtener todos los productos
 GET http://localhost:5050/products
@@ -34,9 +23,17 @@ GET http://localhost:5050/products/price/50
 ###
 
 # Obtener solo username y email de todos los usuarios
-GET http://localhost:5050/users-extended/fields
+GET http://localhost:5050/users/fields
 
 ###
 
 # Obtener órdenes ordenadas por fecha descendente
 GET http://localhost:5050/orders/by-date
+
+###
+
+# Enviar evento para cambiar pantalla
+POST http://localhost:5050/change-screen
+Content-Type: application/json
+
+{}

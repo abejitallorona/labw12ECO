@@ -7,6 +7,7 @@ const cors = require("cors");
 const productsRouter = require("./server/routes/products.router");
 const usersRouter = require("./server/routes/users.router");
 const ordersRouter = require("./server/routes/orders.router");
+const screen1EventsRouter = require("./server/routes/screen1Events.router");
 const { initSocketInstance } = require("./server/services/socket.service");
 
 const PORT = 5050;
@@ -24,6 +25,7 @@ app.use("/app2", express.static(path.join(__dirname, "app2")));
 app.use("/", productsRouter);
 app.use("/", usersRouter);
 app.use("/", ordersRouter);
+app.use("/", screen1EventsRouter);
 
 // Services
 initSocketInstance(httpServer);

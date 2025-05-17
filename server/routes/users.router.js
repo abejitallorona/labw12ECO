@@ -10,6 +10,7 @@ const {
 router.get("/users", getAllUsers);
 
 // 3. Seleccionar campos específicos (username y email)
+// Note: This route should match the one you're using in your request
 router.get("/users/fields", getUsernameAndEmail);
 
 // Para añadir usuarios
